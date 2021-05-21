@@ -196,6 +196,7 @@ def transform_standard_naming(input_name: str) -> str:
 	result = sub(r"[^a-zA-Z0-9_]", "_", result)
 	# for replacing multiple continuous occurences of underscore characters with a single underscore character
 	result = sub(r"_{2,}", "_", result)
+	return result
 
     
 def strip_accents(input_name: str) -> str:
