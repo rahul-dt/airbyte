@@ -186,13 +186,17 @@ class DestinationNameTransformer:
 # Static Functions
 
 
+# with my fixes appended
 def transform_standard_naming(input_name: str) -> str:
-    result = input_name.strip()
-    result = strip_accents(result)
-    result = sub(r"\s+", "_", result)
-    result = sub(r"[^a-zA-Z0-9_]", "_", result)
-    return result
+	# for introducing a space after a small letter, before a capital letter
+	result = sub(r'([a-z](?=[A-Z])|[A-Z](?=[A-Z][a-z]))', r'\1 ', input_name).strip()
+	result = strip_accents(result)
+	# for introducing underscore characters in blank spaces and converting the string to lowercase
+	result = sub(r"\s+", "_", result).lower() 
+	result = sub(r"[^a-zA-Z0-9_]", "_", result)
+	# for replacing multiple continuous occurences of underscore characters with a single underscore character
+	result = sub(r"_{2,}", "_", result)
 
-
+    
 def strip_accents(input_name: str) -> str:
     return "".join(c for c in ud.normalize("NFD", input_name) if ud.category(c) != "Mn")
